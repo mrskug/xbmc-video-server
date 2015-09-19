@@ -51,6 +51,24 @@ class BackendController extends AdminOnlyController
 			parent::filterCheckConfiguration($filterChain);
 	}
 	
+	public function actionTest()
+	{
+		session_write_close();
+
+		$listener = new LibraryUpdateListener();
+		
+		$listener->onScanStarted = function() {
+			$this->log('Started');
+		};
+		$listener->onScanFinished = function() {
+			$this->log('Finished');
+		};
+
+		$listener->blockUntil(LibraryUpdateListener::METHOD_ON_SCAN_FINISHED);
+		
+		echo "Library update finished";
+	}
+
 	/**
 	 * Switches to the specified backend
 	 * @param int $id the backend ID
@@ -99,6 +117,11 @@ class BackendController extends AdminOnlyController
 			Yii::app()->user->setFlash('info', Yii::t('Misc', "You'll have to flush the API call cache to see any newly scanned content"));
 
 		$this->redirectToPrevious(Yii::app()->homeUrl);
+	}
+	
+	public function actionWaitForLibraryUpdate()
+	{
+		$this->render('waitForConnectivity');
 	}
 
 	/**
