@@ -10,6 +10,10 @@ RUN a2enmod rewrite expires
 
 RUN rm -fr /app
 
+VOLUME /src/src/protected/data
+VOLUME /src/src/protected/runtime
+VOLUME /src/src/images
+
 ADD . /src
 
 WORKDIR /src
@@ -19,7 +23,3 @@ RUN ./src/protected/yiic setpermissions
 RUN php ./src/protected/yiic.php migrate --interactive=0
 
 RUN ln -s /src/src/ /app
-
-VOLUME /src/src/protected/data
-VOLUME /src/src/protected/runtime
-VOLUME /src/src/images
