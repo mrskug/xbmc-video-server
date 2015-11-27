@@ -31,6 +31,14 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", path: "provisioning/05-configure-xbmc-video-server.sh",
     name: "05 - Configure XBMC Video Server"
 
+  # install Docker, build an image using the provided Dockerfile and start the 
+  # container
+  config.vm.provision "docker" do |docker|
+    #docker.build_image "/vagrant/provisioning/docker"
+    #docker.run "xbmc-video-server",
+    # args: "-p 8081:80"
+  end
+
   # recurring provisioning
   config.vm.provision "shell", path: "provisioning/98-perform-post-update-tasks.sh", 
     name: "98 - Perform any post-update tasks",
